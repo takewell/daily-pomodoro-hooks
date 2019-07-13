@@ -1,4 +1,33 @@
 .pomodoro-timer {
-  background: coral;
-  width: 300px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.timer-view {
+  margin:auto;
+}
+
+.switch-button-view {
+  margin: auto 0;
+}
+
+.timer-font {
+  font-weight: 600;
+  font-size: 3rem;
+  margin: 0;
+  padding-top: 40px;
+  color: var(--app-color)
+}
+
+.switch-bottom {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--background-color);
+  width: 80px;
+  height: 80px;
+  background-image: url('./../assets//button.svg');
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
