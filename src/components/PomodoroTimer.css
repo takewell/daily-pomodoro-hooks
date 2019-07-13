@@ -3,10 +3,21 @@
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  border-left: 1px solid #D8D8D8;
+  border-right: 1px solid #D8D8D8;
 }
 
 .timer-view {
   margin:auto;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .switch-button-view {
@@ -27,7 +38,7 @@
   color: var(--background-color);
   width: 80px;
   height: 80px;
-  background-image: url('./../assets//button.svg');
+  background-image: url('./../assets/button.svg');
   background-repeat: no-repeat;
   background-size: 100%;
 }

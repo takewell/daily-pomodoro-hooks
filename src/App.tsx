@@ -10,7 +10,7 @@ const App: React.FC = () => {
         {/* TODO: insert logo */}
         <span className="header-items">DailyPomodoro</span>
         <a className="header-items" style={{ fontSize: "20px" }} href="/">
-          About
+          詳細
         </a>
       </header>
       <div

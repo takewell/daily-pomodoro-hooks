@@ -23,47 +23,60 @@ export const PomodoroTimer: React.FC = () => {
   /**
    * TODO: refactor useReducer
    */
-  const onClick = () => {
-    if (isStop) {
-      setStop(false);
+  const onClick = (): void => {
+    const stop = () => {
+      clearInterval(intervalId);
+      setStop(isStop => {
+        return !isStop;
+      });
+    };
+
+    const start = () => {
       intervalId = setInterval(() => {
         setTime(time => {
           const next = time - 1;
-          window.document.title = calcTime(next)
-          return next;
+          if (next === 0) {
+            stop();
+            if (isBreak) {
+              setBreak(false);
+              return POMODORO_TIME;
+            } else {
+              setBreak(true);
+              return BREAK_TIME;
+            }
+          } else {
+            window.document.title = calcTime(next);
+            return next;
+          }
         });
-        if (time === 0) {
-          if (isBreak) setTime(POMODORO_TIME);
-          else setTime(BREAK_TIME);
-          setBreak(!isBreak);
-        }
       }, 1000);
+    };
+
+    if (isStop) {
+      setStop(false);
+      start();
     } else {
-      setStop(true);
-      clearInterval(intervalId);
+      stop();
     }
   };
+
+  const timerStyle = (() => {
+    if (isStop) return {};
+    return {
+      animation: `${
+        isBreak ? BREAK_TIME : POMODORO_TIME
+      }s infinite linear App-logo-spin running`
+    };
+  })();
 
   return (
     <div className="pomodoro-timer">
       <div className="timer-view">
-        <img
-          src={logo}
-          className="App-logo"
-          alt="logo"
-          style={{
-            animation: `App-logo-spin infinite 1500s linear ${
-              isStop ? "paused" : "running"
-            }`
-          }}
-        />
+        <img src={logo} className="App-logo" alt="logo" style={timerStyle} />
         <p className="App-color timer-font">{calcTime(time)}</p>
       </div>
       <div className="switch-button-view">
-        <button
-          className="switch-bottom"
-          onClick={onClick}
-        >
+        <button className="switch-bottom" onClick={onClick}>
           {isStop ? "Start" : "Stop"}
         </button>
       </div>
