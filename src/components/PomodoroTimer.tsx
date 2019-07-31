@@ -24,6 +24,25 @@ export const PomodoroTimer: React.FC = () => {
    * TODO: refactor useReducer
    */
   const onClick = (): void => {
+    const countUp = () => {
+      setTime(time => {
+        const next = time - 1;
+        if (next === 0) {
+          stop();
+          if (isBreak) {
+            setBreak(false);
+            return POMODORO_TIME;
+          } else {
+            setBreak(true);
+            return BREAK_TIME;
+          }
+        } else {
+          window.document.title = calcTime(next);
+          return next;
+        }
+      });
+    };
+
     const stop = () => {
       clearInterval(intervalId);
       setStop(isStop => {
@@ -33,22 +52,7 @@ export const PomodoroTimer: React.FC = () => {
 
     const start = () => {
       intervalId = setInterval(() => {
-        setTime(time => {
-          const next = time - 1;
-          if (next === 0) {
-            stop();
-            if (isBreak) {
-              setBreak(false);
-              return POMODORO_TIME;
-            } else {
-              setBreak(true);
-              return BREAK_TIME;
-            }
-          } else {
-            window.document.title = calcTime(next);
-            return next;
-          }
-        });
+        countUp();
       }, 1000);
     };
 
@@ -61,12 +65,18 @@ export const PomodoroTimer: React.FC = () => {
   };
 
   const timerStyle = (() => {
-    if (isStop) return {};
-    return {
-      animation: `${
-        isBreak ? BREAK_TIME : POMODORO_TIME
-      }s infinite linear App-logo-spin running`
-    };
+    if (
+      (isBreak && time === BREAK_TIME) ||
+      (!isBreak && time === POMODORO_TIME)
+    ) {
+      return {};
+    } else {
+      return {
+        animation: `${
+          isBreak ? BREAK_TIME - 1 : POMODORO_TIME - 1
+        }s infinite linear App-logo-spin ${isStop ? "paused" : "running"}`
+      };
+    }
   })();
 
   return (
